@@ -765,6 +765,51 @@ plot_multiple_choice(QP3_data,
                      QP3,
                      "Response")
 ```
+```{r question_QP4, echo=T, eval = T, message=FALSE, warning=FALSE, results=FALSE, fig.cap="Figure QP4"}
+#Paulina question 4
+#To what extent has the COVID 19 pandemic affected your reuse of data (Your own data)
+pigw21QP4 = as.data.frame(dplyr::select(pigw21, 138))
+pigw21Pile = cbind(pigw21Pile, pigw21QP4)
+
+#Setting column names and storing the question
+colnames(pigw21QP4) = c('QP4')
+QP4 = 'To what extent has the COVID 19 pandemic affected your reuse of data (Your own data).'
+
+#Setting the answer options to Question QP4.
+QP4_levels = c("I have reused it a lot more since the onset of the pandemic",
+               "I have reused it somewhat more since the onset of the pandemice",
+               "My reuse of data has not changed since the onset of the pandemic",
+               "I have reused it somewhat less since the onset of the pandemic",
+               "I have reused it a lot less since the onset of the pandemic")
+
+sod21QP4 = as.data.frame(dplyr::select(sod21,104))
+sod21Pile = cbind(sod21Pile, sod21QP4)
+colnames(sod21QP4) = c('QP4')
+
+#The Pigweb scale puts strong agreement as 1 and strong disagreement as 5, this needs to be reversed for the question.
+pigw21QP4$QP4 = reverseCode(pigw21QP4$QP4)
+
+
+QP4_data = format_question_likert(sod21QP4$QP4,
+                                 pigw21QP4$QP4,
+                                 QP4_levels)
+
+#Likert plot
+plot_likert(QP4_data,
+            QP4_levels,
+            QP4,
+            "Level of usage")
+
+#This section test for if there is statistically significant difference in the respondent groups
+#with the null hypothesis that the two populations are the same. 
+
+ks.test(QP4_data$response[QP4_data$survey == "SoD"],
+        QP4_data$response[QP4_data$survey == "PigWeb"],
+        ifresult = FALSE) #Kolmogorov-Smirnov test for QP4
+
+
+```
+
 
 
 ```{r question_16, echo=T, eval = T, message=FALSE, warning=FALSE, results=FALSE, fig.cap="Figure 16"}
