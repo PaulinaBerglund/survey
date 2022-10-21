@@ -806,9 +806,50 @@ plot_likert(QP4_data,
 ks.test(QP4_data$response[QP4_data$survey == "SoD"],
         QP4_data$response[QP4_data$survey == "PigWeb"],
         ifresult = FALSE) #Kolmogorov-Smirnov test for QP4
-
-
 ```
+```{rquestion_QP5, echo=T, eval = T, message=FALSE, warning=FALSE, results=FALSE, fig.cap="Figure QP5"}
+#Paulina question 5
+#To what extent has the COVID 19 pandemic affected your reuse of data (accessible data shared by other research groups)
+pigw21QP5 = as.data.frame(dplyr::select(pigw21, 139))
+pigw21Pile = cbind(pigw21Pile, pigw21QP5)
+
+#Setting column names and storing the question
+colnames(pigw21QP5) = c('QP5')
+QP5 = 'To what extent has the COVID 19 pandemic affected your reuse of data (accessible data shared by other research groups).'
+
+#Setting the answer options to Question QP5.
+QP5_levels = c("I have reused it a lot more since the onset of the pandemic",
+               "I have reused it somewhat more since the onset of the pandemice",
+               "My reuse of data has not changed since the onset of the pandemic",
+               "I have reused it somewhat less since the onset of the pandemic",
+               "I have reused it a lot less since the onset of the pandemic")
+
+sod21QP5 = as.data.frame(dplyr::select(sod21,105))
+sod21Pile = cbind(sod21Pile, sod21QP5)
+colnames(sod21QP5) = c('QP5')
+
+#The Pigweb scale puts strong agreement as 1 and strong disagreement as 5, this needs to be reversed for the question.
+pigw21QP5$QP5 = reverseCode(pigw21QP5$QP5)
+
+
+QP5_data = format_question_likert(sod21QP5$QP5,
+                                 pigw21QP5$QP5,
+                                 QP5_levels)
+
+#Likert plot
+plot_likert(QP5_data,
+            QP5_levels,
+            QP5,
+            "Level of usage")
+
+#This section test for if there is statistically significant difference in the respondent groups
+#with the null hypothesis that the two populations are the same. 
+
+ks.test(QP5_data$response[QP5_data$survey == "SoD"],
+        QP5_data$response[QP5_data$survey == "PigWeb"],
+        ifresult = FALSE) #Kolmogorov-Smirnov test for QP5
+```
+
 
 
 
